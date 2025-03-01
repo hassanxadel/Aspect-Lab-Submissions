@@ -25,7 +25,7 @@ public String sayHello(){
         return "Hello Post";
     }
     
-@PutMapping("/hello put")
+@PutMapping("/hello put1")
     public String sayHello4(){
         return "Hello Put";
     }
