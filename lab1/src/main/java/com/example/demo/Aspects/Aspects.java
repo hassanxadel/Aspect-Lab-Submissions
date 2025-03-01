@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class Aspects {
 
-    @Before("execution(* com.example.demo.Services.service.*(..))")
+    @Before("execution(* com.example.demo.Services.service.doSomething(..))")
     public void BeforeServices() {
-        System.out.println("Aspect : A method in Servise is being called by hassan");
+        System.out.println("Aspect : Method is called");
     }
 }
