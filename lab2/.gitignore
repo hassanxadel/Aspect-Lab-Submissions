@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 94c90ab (final)
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
@@ -32,6 +35,7 @@ build/
 
 ### VS Code ###
 .vscode/
+<<<<<<< HEAD
 
 ### Application Properties ###
 src/main/resources/application.properties
@@ -61,3 +65,5 @@ src/main/resources/application.properties
 hs_err_pid*
 replay_pid*
 >>>>>>> 0f042a4be3426a3c2e841cc30a5374d309ef8b1e
+=======
+>>>>>>> 94c90ab (final)
