@@ -1,0 +1,32 @@
+services:
+  service-room-pg:
+    image: postgres:latest
+    container_name: room-pg
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5434:5432"
+    volumes:
+      - room_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    # Ensure the container is healthy before starting the application
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  service-room-redis:
+    image: redis:latest
+    container_name: room-redis
+    ports:
+      - "6380:6379"
+    volumes:
+      - room_redis_data:/data
+    restart: unless-stopped
+    command: redis-server --save 60 1 --loglevel warning
+
+volumes:
+  room_data:
+  room_redis_data:
