@@ -1,0 +1,51 @@
+services:
+  service-user-pg:
+    image: postgres:latest
+    container_name: user-pg
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5434:5432"
+    volumes:
+      - user_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    # Ensure the container is healthy before starting the application
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  service-user-redis:
+    image: redis:latest
+    container_name: user-redis
+    ports:
+      - "6380:6379"
+    volumes:
+      - user_redis_data:/data
+    restart: unless-stopped
+    command: redis-server --save 60 1 --loglevel warning
+  
+  service-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: jwt-auth-app
+    ports:
+      - "8081:8081"
+    depends_on:
+      service-user-pg:
+        condition: service_healthy
+      service-user-redis:
+        condition: service_started
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://service-user-pg:5432/postgres
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_DATA_REDIS_HOST=service-user-redis
+      - SPRING_DATA_REDIS_PORT=6379
+
+volumes:
+  user_data:
+  user_redis_data:
